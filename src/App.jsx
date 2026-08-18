@@ -23,7 +23,7 @@ function useClock() {
 }
 
 function App() {
-  const { isActive, mechanism, start, stop } = useWakeLock();
+  const { isActive, mechanism, startedAt, start, stop } = useWakeLock();
   const { settings, update, reset } = useSettings();
   const [elapsed, setElapsed] = useState(0);
   const [showSettings, setShowSettings] = useState(false);
@@ -32,13 +32,15 @@ function App() {
   const gearRef = useRef(null);
 
   useEffect(() => {
-    if (!isActive) {
+    if (!startedAt) {
       setElapsed(0);
       return;
     }
-    const id = setInterval(() => setElapsed((e) => e + 1), 1000);
+    const tick = () => setElapsed(Math.floor((Date.now() - startedAt) / 1000));
+    tick();
+    const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [isActive]);
+  }, [startedAt]);
 
   useEffect(() => {
     if (!showSettings) return;

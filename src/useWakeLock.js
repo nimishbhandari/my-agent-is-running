@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const isWakeLockSupported = typeof navigator !== "undefined" && "wakeLock" in navigator;
+const STORAGE_KEY = "keep-awake-started-at";
 
 function createFallbackVideoLock() {
   const canvas = document.createElement("canvas");
@@ -33,12 +34,19 @@ function createFallbackVideoLock() {
 export function useWakeLock() {
   const [isActive, setIsActive] = useState(false);
   const [mechanism, setMechanism] = useState(null);
+  const [startedAt, setStartedAt] = useState(() => Number(localStorage.getItem(STORAGE_KEY)) || null);
   const wantActiveRef = useRef(false);
   const sentinelRef = useRef(null);
   const fallbackRef = useRef(null);
 
   const start = useCallback(async () => {
     wantActiveRef.current = true;
+
+    if (!localStorage.getItem(STORAGE_KEY)) {
+      const now = Date.now();
+      localStorage.setItem(STORAGE_KEY, String(now));
+      setStartedAt(now);
+    }
 
     if (isWakeLockSupported) {
       try {
@@ -64,6 +72,8 @@ export function useWakeLock() {
 
   const stop = useCallback(async () => {
     wantActiveRef.current = false;
+    localStorage.removeItem(STORAGE_KEY);
+    setStartedAt(null);
 
     if (sentinelRef.current) {
       await sentinelRef.current.release();
@@ -87,6 +97,13 @@ export function useWakeLock() {
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [start]);
 
+  useEffect(() => {
+    if (startedAt) start();
+    // deliberately mount-only: `start` is stable and re-running on every
+    // `startedAt` change (which `start()` itself triggers) would re-request
+    // the lock redundantly.
+  }, []);
+
   useEffect(
     () => () => {
       sentinelRef.current?.release();
@@ -95,5 +112,5 @@ export function useWakeLock() {
     [],
   );
 
-  return { isActive, mechanism, isSupported: isWakeLockSupported, start, stop };
+  return { isActive, mechanism, startedAt, isSupported: isWakeLockSupported, start, stop };
 }
