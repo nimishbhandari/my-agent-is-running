@@ -14,6 +14,10 @@ export const defaultSettings = {
   subtitleColor: "#ffffff",
   sessionColor: "#ffffff",
   timerColor: "#ffffff",
+  protectFullscreen: true,
+  protectKeyboardLock: true,
+  protectCloseWarning: true,
+  protectTamperLog: true,
 };
 
 function load() {
