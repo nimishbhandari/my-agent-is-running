@@ -68,6 +68,8 @@ function App() {
     "--title-color": settings.titleColor,
     "--subtitle-color": settings.subtitleColor,
     "--session-color": settings.sessionColor,
+    "--timer-color": settings.timerColor,
+    "--timer-rgb": hexToRgb(settings.timerColor),
     ...(settings.backgroundImage && {
       backgroundImage: `url(${settings.backgroundImage})`,
       backgroundSize: "cover",
@@ -112,6 +114,7 @@ function App() {
       )}
 
       <main className="hero">
+        {isActive && <div className="timer">{formatElapsed(elapsed)}</div>}
         <h1>
           {titleLines.map((line, i) => (
             <span key={`${line}-${i}`}>{line}</span>
@@ -128,7 +131,7 @@ function App() {
         </span>
         <span className="dock-text">
           <strong>{settings.sessionName}</strong>
-          <em>{isActive ? `${formatElapsed(elapsed)}${mechanism === "fallback" ? " · fallback" : ""}` : "not keeping awake"}</em>
+          <em>{isActive ? (mechanism === "fallback" ? "fallback mode" : "keeping screen awake") : "not keeping awake"}</em>
         </span>
         <span className="dock-btn">
           {isActive ? (

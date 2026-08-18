@@ -137,6 +137,15 @@
   padding: 0 24px 120px;
 }
 
+.timer {
+  font: 700 clamp(48px, 11vw, 120px) / 1 ui-monospace, "SF Mono", Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--timer-color, #fff);
+  text-shadow: 0 0 40px rgba(var(--timer-rgb), 0.35);
+  margin-bottom: 12px;
+}
+
 .hero h1 {
   margin: 0;
   display: flex;
@@ -148,7 +157,7 @@
   line-height: 1.02;
   letter-spacing: -0.03em;
   text-transform: uppercase;
-  color: var(--title-color, #f5f2ec);
+  color: var(--title-color, #fff);
 
   span {
     min-width: 0;
@@ -159,7 +168,7 @@
 
 .hero p {
   margin: 20px 0 0;
-  color: var(--subtitle-color, rgba(255, 255, 255, 0.45));
+  color: var(--subtitle-color, #fff);
   font-size: 16px;
 }
 
@@ -239,7 +248,7 @@
   strong {
     font-size: 14px;
     font-weight: 600;
-    color: var(--session-color, #f5f2ec);
+    color: var(--session-color, #fff);
     white-space: nowrap;
   }
 

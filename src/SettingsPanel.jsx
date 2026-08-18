@@ -70,6 +70,10 @@ function SettingsPanel({ settings, onUpdate, onReset, onClose }) {
           />
           Session
         </label>
+        <label className="color-field">
+          <input type="color" value={settings.timerColor} onChange={(e) => onUpdate({ timerColor: e.target.value })} />
+          Timer
+        </label>
       </div>
 
       <div className="field-label">Background image</div>

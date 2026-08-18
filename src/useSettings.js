@@ -10,9 +10,10 @@ export const defaultSettings = {
   sessionName: "Coding session",
   accent: "#ff8d46",
   backgroundImage: defaultBackground,
-  titleColor: "#f5f2ec",
-  subtitleColor: "#a39dbd",
-  sessionColor: "#f5f2ec",
+  titleColor: "#ffffff",
+  subtitleColor: "#ffffff",
+  sessionColor: "#ffffff",
+  timerColor: "#ffffff",
 };
 
 function load() {
